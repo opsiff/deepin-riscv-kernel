@@ -72,7 +72,7 @@ jobs:
           cd /usr/lib/ccache && ln -s ../../bin/ccache ../../bin/$GCC
           which $GCC
           $GCC -v
-          ccache -F 0 -M 10GiB
+          ccache -F 0 -M 2GiB
           ccache -s
   
       # https://github.com/actions/cache/blob/main/restore/README.md
@@ -83,8 +83,8 @@ jobs:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-kernel-${{ env.GCC }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-kernel-${{ env.GCC }}-
-            ${{ runner.os }}-kernel-
+            ${{ runner.os }}-kernel-${{ matrix.board }}-${{ env.GCC }}-
+            ${{ runner.os }}-kernel-${{ matrix.board }}-
 
       - name: "Clone Kernel"
         run: git clone --depth=1 -b ${{ matrix.kernel_branch }} ${{ matrix.kernel_git }} kernel
@@ -135,7 +135,7 @@ jobs:
         uses: actions/cache/save@v3
         with:
           path: ${{ env.CCACHE_DIR }}
-          key: ${{ runner.os }}-kernel-${{ env.GCC }}-${{ github.sha }}
+          key: ${{ runner.os }}-kernel-${{ matrix.board }}-${{ env.GCC }}-${{ github.sha }}
 
       - name: 'Upload Kernel Artifact'
         uses: actions/upload-artifact@v3
