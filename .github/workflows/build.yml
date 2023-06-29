@@ -11,7 +11,7 @@ on:
 env:
   CROSS_COMPILE: riscv64-linux-gnu-
   GCC: riscv64-linux-gnu-gcc
-  CCACHE_DIR: /root/ccache
+  CCACHE_DIR: /home/$(whoami)/ccache
   CCACHE_COMPILERTYPE: gcc
   ARCH: riscv
   KBUILD_BUILD_USER: deepin-riscv-sig
