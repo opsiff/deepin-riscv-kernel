@@ -69,7 +69,7 @@ jobs:
           git config --global user.name $KBUILD_BUILD_USER
           # prepare ccache
           mkdir -p $CCACHE_DIR
-          cd /usr/lib/ccache && ln -s ../../bin/ccache ../../bin/$GCC
+          sudo ln -s /bin/ccache /bin/$GCC
           which $GCC
           $GCC -v
           ccache -F 0 -M 2GiB
