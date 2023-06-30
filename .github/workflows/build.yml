@@ -12,8 +12,7 @@ env:
   CROSS_COMPILE: riscv64-linux-gnu-
   # for ccache
   GCC: riscv64-linux-gnu-gcc
-  # runner is name for github cache 
-  CCACHE_DIR: /home/runner/ccache
+  CCACHE_DIR: /tmp/runnerccache
   CCACHE_COMPILERTYPE: gcc
   ARCH: riscv
   KBUILD_BUILD_USER: deepin-riscv-sig
