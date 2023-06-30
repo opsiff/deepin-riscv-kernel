@@ -69,10 +69,6 @@ jobs:
           git config --global user.name $KBUILD_BUILD_USER
           # prepare ccache
           mkdir -p $CCACHE_DIR
-          sudo rm /bin/$GCC
-          sudo ln -s /bin/ccache /bin/$GCC
-          which $GCC
-          $GCC -v
           ccache -F 0 -M 2GiB
           ccache -s
   
@@ -115,13 +111,15 @@ jobs:
             cat ../cgroup_defconfig >> arch/riscv/configs/${{ matrix.kernel_config }}
             # enable CONFIG_DEBUG_INFO_DWARF5 to generate dbg deb with dwarf5 format
             echo CONFIG_DEBUG_INFO_DWARF5=y >> arch/riscv/configs/${{ matrix.kernel_config }}
-            make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} ${{ matrix.kernel_config }}
+            # add ccache
+            make CROSS_COMPILE=ccache ${CROSS_COMPILE} ARCH=${ARCH} ${{ matrix.kernel_config }}
             if [ -f ../config/${board}/kernelconfig ]; then
               cp -v ../config/${board}/kernelconfig .config
             fi
                         
             sed -i '/CONFIG_LOCALVERSION_AUTO/d' .config && echo "CONFIG_LOCALVERSION_AUTO=n" >> .config
-            make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} bindeb-pkg -j$(nproc) LOCALVERSION="-${{ matrix.board }}"
+            # add ccache
+            make CROSS_COMPILE=ccache ${CROSS_COMPILE} ARCH=${ARCH} bindeb-pkg -j$(nproc) LOCALVERSION="-${{ matrix.board }}"
           popd
 
       - name: Check ccache
