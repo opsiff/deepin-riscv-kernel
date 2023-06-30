@@ -77,9 +77,8 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: ${{ env.CCACHE_DIR }}
-          key: ${{ runner.os }}-kernel-${{ env.GCC }}-${{ github.sha }}
+          key: ${{ runner.os }}-kernel-${{ matrix.board }}-${{ env.GCC }}-
           restore-keys: |
-            ${{ runner.os }}-kernel-${{ matrix.board }}-${{ env.GCC }}-
             ${{ runner.os }}-kernel-${{ matrix.board }}-
 
       - name: "Clone Kernel"
@@ -133,7 +132,7 @@ jobs:
         uses: actions/cache/save@v3
         with:
           path: ${{ env.CCACHE_DIR }}
-          key: ${{ runner.os }}-kernel-${{ matrix.board }}-${{ env.GCC }}-${{ github.sha }}
+          key: ${{ runner.os }}-kernel-${{ matrix.board }}-${{ env.GCC }}
 
       - name: 'Upload Kernel Artifact'
         uses: actions/upload-artifact@v3
