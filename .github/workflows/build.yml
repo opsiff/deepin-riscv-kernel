@@ -60,7 +60,12 @@ jobs:
       - name: "Update APT sources"
         run: |
           sudo apt update
-
+ 
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 8
+ 
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
         with:
