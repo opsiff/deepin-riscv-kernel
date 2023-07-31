@@ -98,17 +98,6 @@ jobs:
               ccache -F 0 -M 4GiB
           fi
           ccache -s
-  
-      # https://github.com/actions/cache/blob/main/restore/README.md
-      - name: Restore linux build cache
-        id: restore
-        uses: actions/cache/restore@v3
-        with:
-          path: ${{ env.CCACHE_DIR }}
-          key: ${{ runner.os }}-kernel-${{ matrix.board }}-${{ env.GCC }}-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-kernel-${{ matrix.board }}-${{ env.GCC }}-
-            ${{ runner.os }}-kernel-${{ matrix.board }}-
 
       - name: "Clone Kernel"
         run: git clone --depth=1 -b ${{ matrix.kernel_branch }} ${{ matrix.kernel_git }} kernel
@@ -160,15 +149,6 @@ jobs:
         run: |
           ccache -s
           du -hd0 $CCACHE_DIR
-
-      # https://github.com/actions/cache/blob/main/save/README.md
-      - name: Save linux build cache
-        id: cache
-        if: ${{ github.event_name }} == "workflow_dispatch"
-        uses: actions/cache/save@v3
-        with:
-          path: ${{ env.CCACHE_DIR }}
-          key: ${{ runner.os }}-kernel-${{ matrix.board }}-${{ env.GCC }}-${{ github.sha }}
 
       - name: 'Upload Kernel Artifact'
         uses: actions/upload-artifact@v3
