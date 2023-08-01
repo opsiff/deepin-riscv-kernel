@@ -224,7 +224,7 @@ jobs:
         run: |
           pushd u-boot
             make CROSS_COMPILE="${CROSS_COMPILE}" ARCH="${ARCH}" ${{ matrix.uboot_config }}
-            make CROSS_COMPILE="${CROSS_COMPILE}" ARCH="${ARCH}" OPENSBI="../${OUT_DIR}/fw_dynamic.bin" -j$(nproc)
+            make CROSS_COMPILE="${CROSS_COMPILE}" ARCH="${ARCH}" OPENSBI="../${OUT_DIR}/fw_dynamic.bin" -j$(nproc) V=1
 
             if [[ ${{ matrix.board }} = 'unmatched' ]]; then
               cp -v spl/u-boot-spl.bin "../${OUT_DIR}"
